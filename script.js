@@ -1031,7 +1031,7 @@ function updateModeUI(mode) {
   if (currentMode === "MANUAL") {
     modeBadge.classList.add("manual");
     manualBtn.classList.add("active-manual");
-    modeNote.innerHTML = "Manual mode active. Web button sends command to control.";
+    modeNote.innerHTML = "";
     controlNote.innerHTML = "Display follows live data. Commands are written to Firebase control.";
     manualButtons.forEach(button => button.disabled = false);
   } else {
