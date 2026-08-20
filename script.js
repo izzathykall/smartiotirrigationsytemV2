@@ -50,10 +50,11 @@ async function setupPushNotifications(userUid) {
     const permission = await Notification.requestPermission();
     
     if (permission === "granted") {
-      // 1. Daftarkan service worker secara manual mengikut laluan GitHub Pages anda
-      const swRegistration = await navigator.serviceWorker.register('/smartioirrigationsystemV2/firebase-messaging-sw.js');
+      // Gunakan laluan relatif supaya ia mengikut struktur folder semasa di GitHub Pages
+      const swRegistration = await navigator.serviceWorker.register('./firebase-messaging-sw.js', {
+        scope: './'
+      });
 
-      // 2. Gunakan pendaftaran tersebut untuk mendapatkan FCM Token
       const token = await getToken(messaging, {
         vapidKey: "BEzQHNigs0JY_MWDDUcx93Oee8R3tYp2b3yVqAHpAwvKpM6DlY23PHXWy0c-qgVRJq5qjRLfBTHbmUc_ft3Ktrw",
         serviceWorkerRegistration: swRegistration
@@ -72,9 +73,6 @@ async function setupPushNotifications(userUid) {
     alert("Ralat getToken: " + error.message);
   }
 }
-
-
-
 
 // MODIFICATION: Foreground Notification Handler
 onMessage(messaging, (payload) => {
