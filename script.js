@@ -42,15 +42,11 @@ const messaging = getMessaging(app);
 // MODIFICATION: Push Notification Setup Function
 async function setupPushNotifications(userUid) {
   try {
-    if (!("Notification" in window)) {
-      alert("Pelayar ini tidak menyokong Web Notification.");
-      return;
-    }
+    if (!("Notification" in window)) return;
 
     const permission = await Notification.requestPermission();
     
     if (permission === "granted") {
-      // Gunakan laluan relatif supaya ia mengikut struktur folder semasa di GitHub Pages
       const swRegistration = await navigator.serviceWorker.register('./firebase-messaging-sw.js', {
         scope: './'
       });
@@ -61,18 +57,15 @@ async function setupPushNotifications(userUid) {
       });
 
       if (token) {
-        alert("Token berjaya diperolehi!");
+        console.log("FCM Token berjaya didapati:", token);
         await update(ref(database, `users/${userUid}`), { fcmToken: token });
-      } else {
-        alert("Token bernilai null/kosong.");
       }
-    } else {
-      alert("Permission ditolak.");
     }
   } catch (error) {
-    alert("Ralat getToken: " + error.message);
+    console.error("Ralat mendapatkan token notifikasi:", error);
   }
 }
+
 
 // MODIFICATION: Foreground Notification Handler
 onMessage(messaging, (payload) => {
