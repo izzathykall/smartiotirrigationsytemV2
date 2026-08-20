@@ -42,7 +42,6 @@ const messaging = getMessaging(app);
 // MODIFICATION: Push Notification Setup Function
 async function setupPushNotifications(userUid) {
   try {
-    // Semak sama ada peranti / pelayar menyokong Notification API
     if (!("Notification" in window)) {
       alert("Pelayar ini tidak menyokong Web Notification.");
       return;
@@ -51,8 +50,13 @@ async function setupPushNotifications(userUid) {
     const permission = await Notification.requestPermission();
     
     if (permission === "granted") {
+      // 1. Daftarkan service worker secara manual mengikut laluan GitHub Pages anda
+      const swRegistration = await navigator.serviceWorker.register('/smartioirrigationsystemV2/firebase-messaging-sw.js');
+
+      // 2. Gunakan pendaftaran tersebut untuk mendapatkan FCM Token
       const token = await getToken(messaging, {
-        vapidKey: "BEzQHNigs0JY_MWDDUcx93Oee8R3tYp2b3yVqAHpAwvKpM6DlY23PHXWy0c-qgVRJq5qjRLfBTHbmUc_ft3Ktrw" 
+        vapidKey: "BEzQHNigs0JY_MWDDUcx93Oee8R3tYp2b3yVqAHpAwvKpM6DlY23PHXWy0c-qgVRJq5qjRLfBTHbmUc_ft3Ktrw",
+        serviceWorkerRegistration: swRegistration
       });
 
       if (token) {
@@ -68,6 +72,7 @@ async function setupPushNotifications(userUid) {
     alert("Ralat getToken: " + error.message);
   }
 }
+
 
 
 
