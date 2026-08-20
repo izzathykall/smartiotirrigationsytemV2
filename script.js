@@ -43,6 +43,7 @@ const messaging = getMessaging(app);
 async function setupPushNotifications(userUid) {
   try {
     const permission = await Notification.requestPermission();
+    alert("Permission status: " + permission); // Debug 1
     
     if (permission === "granted") {
       const token = await getToken(messaging, {
@@ -50,18 +51,19 @@ async function setupPushNotifications(userUid) {
       });
 
       if (token) {
-        console.log("FCM Token berjaya didapati:", token);
+        alert("Token berjaya diperolehi!"); // Debug 2
         await update(ref(database, `users/${userUid}`), { fcmToken: token });
       } else {
-        console.warn("Tiada token pendaftaran tersedia.");
+        alert("Token bernilai null/kosong."); // Debug 3
       }
     } else {
-      console.warn("Kebenaran notifikasi ditolak oleh pengguna.");
+      alert("Permission ditolak.");
     }
   } catch (error) {
-    console.error("Ralat semasa mendapatkan token notifikasi:", error);
+    alert("Ralat getToken: " + error.message); // Debug 4
   }
 }
+
 
 // MODIFICATION: Foreground Notification Handler
 onMessage(messaging, (payload) => {
