@@ -42,8 +42,13 @@ const messaging = getMessaging(app);
 // MODIFICATION: Push Notification Setup Function
 async function setupPushNotifications(userUid) {
   try {
+    // Semak sama ada peranti / pelayar menyokong Notification API
+    if (!("Notification" in window)) {
+      alert("Pelayar ini tidak menyokong Web Notification.");
+      return;
+    }
+
     const permission = await Notification.requestPermission();
-    alert("Permission status: " + permission); // Debug 1
     
     if (permission === "granted") {
       const token = await getToken(messaging, {
@@ -51,18 +56,19 @@ async function setupPushNotifications(userUid) {
       });
 
       if (token) {
-        alert("Token berjaya diperolehi!"); // Debug 2
+        alert("Token berjaya diperolehi!");
         await update(ref(database, `users/${userUid}`), { fcmToken: token });
       } else {
-        alert("Token bernilai null/kosong."); // Debug 3
+        alert("Token bernilai null/kosong.");
       }
     } else {
       alert("Permission ditolak.");
     }
   } catch (error) {
-    alert("Ralat getToken: " + error.message); // Debug 4
+    alert("Ralat getToken: " + error.message);
   }
 }
+
 
 
 // MODIFICATION: Foreground Notification Handler
