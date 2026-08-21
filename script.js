@@ -58,7 +58,8 @@ async function setupPushNotifications(userUid) {
 
       if (token) {
         console.log("FCM Token berjaya didapati:", token);
-        await update(ref(database, `users/${userUid}`), { fcmToken: token });
+        // Simpan sebagai senarai multi-token supaya peranti lain tidak terpadam
+        await set(ref(database, `users/${userUid}/fcmTokens/${token}`), true);
       }
     }
   } catch (error) {
