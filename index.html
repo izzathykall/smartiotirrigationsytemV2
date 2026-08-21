@@ -8,9 +8,13 @@
   <!-- Ikon Web & iOS -->
   <link rel="icon" type="image/png" href="icon.png">
   <link rel="apple-touch-icon" href="icon.png">
-  <!-- Web App Manifest (Nama: Smart Herbs) -->
+  <!-- Web App Manifest -->
   <link rel="manifest" href="manifest.json">
 
+  <!-- Font Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -102,13 +106,13 @@
   </div>
 
   <div class="app">
-
     <div class="main-area">
+      <!-- HEADER BENTO UTAMA -->
       <div class="header">
         <div>
-          <div class="eyebrow">● IoT Smart Irrigation App</div>
-          <h1>Smart Irrigation Monitoring System For Leafy Herbs</h1>
-          <p>Realtime sensor monitoring, mode switching, pump control, and history data in one clean professional app.</p>
+          <div class="eyebrow">● IoT Smart Irrigation System</div>
+          <h1>Smart Herbs & Field Control</h1>
+          <p>Real-time sensor metrics, intelligent automated switching, and precision pump management.</p>
         </div>
 
         <div class="top-actions">
@@ -140,14 +144,16 @@
         </div>
       </div>
 
+      <!-- KANDUNGAN UTAMA BENTO GRID -->
       <div class="main-card">
+        
+        <!-- MOD PANAS (SYSTEM MODE) -->
         <div class="mode-panel">
           <div class="mode-top">
             <div>
-              <div class="mode-title">System Mode</div>
-              <p class="manual-note" id="modeNote"></p>
+              <div class="mode-title">System Execution Mode</div>
+              <p class="manual-note" id="modeNote">Pilih mod operasi automatik atau kawalan manual penuh.</p>
             </div>
-
             <div class="mode-badge auto" id="modeBadge">AUTO</div>
           </div>
 
@@ -157,10 +163,11 @@
           </div>
         </div>
 
+        <!-- SEKSYEN KELOMPOK SENSOR UTAMA -->
         <div class="section-row">
           <div>
-            <div class="section-title">Sensor Data</div>
-            <div class="section-subtitle">Temperature, humidity, soil, rain and water level readings.</div>
+            <div class="section-title">Environmental Sensor Metrics</div>
+            <div class="section-subtitle">Data langsung persekitaran ladang herba. Sentuh kad untuk melihat carta sejarah.</div>
           </div>
         </div>
 
@@ -216,7 +223,7 @@
             </div>
             <div class="water-level-wrap">
               <div class="level-text-block">
-                <div class="label">Borewell Water Level</div>
+                <div class="label">Borewell Level</div>
                 <div class="small-value" id="borewell">--</div>
               </div>
               <div>
@@ -235,7 +242,7 @@
             </div>
             <div class="water-level-wrap">
               <div class="level-text-block">
-                <div class="label">Spare Tank Water Level</div>
+                <div class="label">Spare Tank Level</div>
                 <div class="small-value" id="spareTank">--</div>
               </div>
               <div>
@@ -248,10 +255,11 @@
           </div>
         </div>
 
+        <!-- SEKSYEN KUASA SOLAR & BATERI -->
         <div class="section-row power-section-row">
           <div>
-            <div class="section-title">Power Monitoring</div>
-            <div class="section-subtitle">Battery voltage, charging current, solar power and solar charging status.</div>
+            <div class="section-title">Power & Solar Telemetry</div>
+            <div class="section-subtitle">Status voltan bateri, arus pengecasan dan kecekapan kuasa solar.</div>
           </div>
         </div>
 
@@ -295,18 +303,19 @@
               <div class="chip">LIVE</div>
             </div>
             <div>
-              <div class="label">Solar Charging Status</div>
+              <div class="label">Solar Status</div>
               <div class="small-value" id="solarStatus">--</div>
             </div>
           </div>
         </div>
 
-        <div class="tap-note">📈 Tap any sensor or power card to view history data</div>
+        <div class="tap-note">📈 Ketik mana-mana kad sensor atau kuasa untuk membuka carta analisis sejarah masa.</div>
 
+        <!-- KAWALAN PAM (PUMP CONTROL) -->
         <div class="section-row">
           <div>
-            <div class="section-title">Pump Control</div>
-            <div class="section-subtitle">Manual pump buttons unlock only when system mode is MANUAL.</div>
+            <div class="section-title">Actuator & Pump Control</div>
+            <div class="section-subtitle">Kunci kawalan manual aktif hanya apabila mod sistem ditetapkan kepada MANUAL.</div>
           </div>
         </div>
 
@@ -337,16 +346,17 @@
         </div>
 
         <p class="manual-note" id="controlNote">
-          Pump status is taken from Firebase control.
+          Status sistem diselaraskan secara langsung melalui pangkalan data Firebase.
         </p>
       </div>
 
       <div class="footer">
-        IoT Smart Irrigation System By Izzat.hkl
+        IoT Smart Irrigation System By Izzat.hkl • Bento Edition
       </div>
     </div>
   </div>
 
+  <!-- MODAL PENGURUSAN PENGGUNA -->
   <div class="modal" id="userManagementModal" aria-hidden="true">
     <div class="modal-content user-management-content">
       <div class="modal-top user-management-header">
@@ -411,6 +421,7 @@
     </div>
   </div>
 
+  <!-- MODAL GRAF SEJARAH -->
   <div class="modal" id="graphModal">
     <div class="modal-content">
       <div class="modal-top">
@@ -420,21 +431,9 @@
 
       <div class="history-controls">
         <button onclick="moveHistory(-1)">← Older</button>
-
-        <input
-          type="range"
-          id="historySlider"
-          min="0"
-          max="0"
-          value="0"
-          oninput="slideHistory(this.value)"
-        >
-
+        <input type="range" id="historySlider" min="0" max="0" value="0" oninput="slideHistory(this.value)">
         <button onclick="moveHistory(1)">Newer →</button>
-
-        <div class="history-info" id="historyInfo">
-          Showing latest data
-        </div>
+        <div class="history-info" id="historyInfo">Showing latest data</div>
       </div>
 
       <div class="chart-box">
@@ -442,6 +441,7 @@
       </div>
     </div>
   </div>
+
   <script type="module" src="script.js"></script>
 </body>
 </html>
