@@ -135,11 +135,7 @@
               <button class="settings-menu-btn manage-users-btn" id="manageUsersButton" onclick="openUserManagement()">👥 MANAGE USERS</button>
               <button class="settings-menu-btn delete-history-btn" onclick="deleteAllHistory()">🗑 DELETE ALL HISTORY</button>
               <button class="settings-menu-btn logout-btn" onclick="logout()">↪ LOG OUT</button>
-              <!-- Bahagian Tambahan -->
-              <div class="settings-menu-title" style="margin-top: 15px; border-top: 1px solid #ccc; padding-top: 10px;">OTA UPDATE</div>
-              <input type="file" id="firmwareFileInput" accept=".bin" style="font-size: 10px; margin-bottom: 5px;">
-              <button class="settings-menu-btn" onclick="uploadFirmware()" style="background: #10b981; color: white;">⬆ UPLOAD FIRMWARE</button>
-            </div>
+              <button class="settings-menu-btn" onclick="openOtaModal()" style="background: linear-gradient(135deg, #0ea5e9, #2563eb); color: white; margin-top: 8px;">📡 OTA UPDATE</button>
           </div>
         </div>
       </div>
@@ -446,6 +442,18 @@
       </div>
     </div>
   </div>
+    <div class="modal" id="otaModal" aria-hidden="true">
+  <div class="modal-content" style="width: min(100%, 420px); text-align: center;">
+    <div class="modal-top" style="margin-bottom: 15px;">
+      <h2>OTA Firmware Update</h2>
+      <button class="close-btn" type="button" onclick="closeOtaModal()">Close</button>
+    </div>
+    <p style="color: var(--muted); font-size: 13px; margin-bottom: 15px;">Pilih fail `.bin` ESP32-S3 untuk dikemas kini dari jarak jauh melalui Orange Pi.</p>
+    <input type="file" id="firmwareFileInput" accept=".bin" style="font-size: 12px; margin-bottom: 15px; width: 100%; padding: 10px; background: var(--surface-soft); border-radius: 12px; border: 1px solid var(--border);">
+    <button class="login-btn" onclick="uploadFirmware()" style="width: 100%; min-height: 48px; border-radius: 14px;">UPLOAD & UPDATE ESP32</button>
+  </div>
+</div>
   <script type="module" src="script.js"></script>
+    
 </body>
 </html>
