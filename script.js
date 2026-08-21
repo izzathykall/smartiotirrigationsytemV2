@@ -1605,7 +1605,7 @@ window.uploadFirmware = async function() {
 
   try {
     // Gantikan <IP_ORANGE_PI> dengan alamat IP Orange Pi anda (Contoh: 192.168.1.50)
-    const response = await fetch('http://<IP_ORANGE_PI>:3000/upload-firmware', {
+    const response = await fetch('http://192.168.0.189:3000/upload-firmware', {
       method: 'POST',
       body: formData
     });
@@ -1621,4 +1621,21 @@ window.uploadFirmware = async function() {
     console.error('Ralat rangkaian:', error);
     alert('Tidak dapat berhubung dengan pelayan Orange Pi.');
   }
+};
+
+window.openOtaModal = function() {
+  closeSettingsMenu();
+  const modal = document.getElementById("otaModal");
+  if (!modal) return;
+  modal.style.display = "flex";
+  modal.setAttribute("aria-hidden", "false");
+  requestAnimationFrame(() => modal.classList.add("show"));
+};
+
+window.closeOtaModal = function() {
+  const modal = document.getElementById("otaModal");
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+  setTimeout(() => { modal.style.display = "none"; }, 180);
 };
