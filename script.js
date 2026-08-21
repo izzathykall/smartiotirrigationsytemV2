@@ -780,9 +780,24 @@ window.logout = async function() {
   closeSettingsMenu();
 
   try {
+    const user = auth.currentUser;
+    if (user) {
+      const currentSwReg = await navigator.serviceWorker.getRegistration('./');
+      if (currentSwReg) {
+        const token = await getToken(messaging, { serviceWorkerRegistration: currentSwReg });
+        if (token) {
+          // Padam token dari senarai multi-token peranti ini
+          await remove(ref(database, `users/${user.uid}/fcmTokens/${token}`));
+          // Padam juga format token tunggal lama jika ada
+          await update(ref(database, `users/${user.uid}`), { fcmToken: null });
+        }
+      }
+    }
+
     await signOut(auth);
   } catch (error) {
     console.error("Logout failed", error);
+    await signOut(auth).catch(() => {});
     alert("Unable to log out. Please try again.");
   }
 };
