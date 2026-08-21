@@ -1590,3 +1590,35 @@ onAuthStateChanged(auth, async user => {
 setTheme(savedTheme);
 updateModeUI("AUTO");
 updateRealtimeStatus();
+
+// TAMBAH KOD INI DI BARIS PALING BAWAH SCRIPT.JS
+window.uploadFirmware = async function() {
+  const fileInput = document.getElementById('firmwareFileInput');
+  if (!fileInput || !fileInput.files.length) {
+    alert('Sila pilih fail .bin terlebih dahulu.');
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const formData = new FormData();
+  formData.append('firmware', file);
+
+  try {
+    // Gantikan <IP_ORANGE_PI> dengan alamat IP Orange Pi anda (Contoh: 192.168.1.50)
+    const response = await fetch('http://<IP_ORANGE_PI>:3000/upload-firmware', {
+      method: 'POST',
+      body: formData
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      await set(ref(database, 'control/ota_version'), Date.now());
+      alert('Firmware berjaya dimuat naik ke Orange Pi! ESP32 akan dikemas kini.');
+    } else {
+      alert('Gagal: ' + (result.error || 'Ralat tidak diketahui'));
+    }
+  } catch (error) {
+    console.error('Ralat rangkaian:', error);
+    alert('Tidak dapat berhubung dengan pelayan Orange Pi.');
+  }
+};
